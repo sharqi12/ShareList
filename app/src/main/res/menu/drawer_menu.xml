@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_user_account"
+            android:title="Profile"/>
+        <item android:id="@+id/nav_allLists"
+            android:icon="@drawable/ic_all_lists"
+            android:title="Show all your lists"/>
+        <item android:id="@+id/nav_addNewList"
+            android:icon="@drawable/ic_new_list"
+            android:title="Create new list"/>
+    </group>
+</menu>
