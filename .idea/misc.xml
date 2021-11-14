@@ -10,7 +10,9 @@
         <entry key="app/src/main/res/drawable/ic_share.xml" value="0.24375" />
         <entry key="app/src/main/res/drawable/ic_user_account.xml" value="0.24375" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_lists.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_profile.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.25" />
         <entry key="app/src/main/res/layout/content_home_activity_drawer.xml" value="0.1" />
         <entry key="app/src/main/res/layout/nav_header.xml" value="0.25" />
