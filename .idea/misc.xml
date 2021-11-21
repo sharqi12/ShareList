@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Stary komputer/Projekty/ShareList/app/src/main/res/layout/activity_lists.xml" value="0.25407608695652173" />
+        <entry key="..\:/Stary komputer/Projekty/ShareList/app/src/main/res/layout/activity_profile.xml" value="0.25407608695652173" />
+        <entry key="..\:/Stary komputer/Projekty/ShareList/app/src/main/res/layout/input_dialog.xml" value="0.36666666666666664" />
         <entry key="app/src/main/res/drawable/ic_add_new_item.xml" value="0.24375" />
         <entry key="app/src/main/res/drawable/ic_all_lists.xml" value="0.24375" />
         <entry key="app/src/main/res/drawable/ic_new_list.xml" value="0.24375" />
@@ -20,7 +23,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
