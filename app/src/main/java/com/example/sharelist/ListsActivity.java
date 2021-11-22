@@ -87,7 +87,6 @@ public class ListsActivity extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
-        listView.setAdapter(adapter);
 
     }
 
