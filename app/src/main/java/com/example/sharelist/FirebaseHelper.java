@@ -1,5 +1,7 @@
 package com.example.sharelist;
 
+import android.widget.ArrayAdapter;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -15,6 +17,7 @@ public class FirebaseHelper {
     Boolean saved=null;
     ArrayList<String> appListsNames =new ArrayList<>();
 
+
     public FirebaseHelper(DatabaseReference db) {
         this.db = db;
     }
@@ -29,7 +32,7 @@ public class FirebaseHelper {
         {
             try
             {
-                db.child("AppList").push().setValue(appList);
+                db.push().setValue(appList);
                 saved=true;
 
             }catch (DatabaseException e)

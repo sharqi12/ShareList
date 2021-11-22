@@ -17,8 +17,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListsActivity extends Fragment {
 
@@ -27,28 +33,44 @@ public class ListsActivity extends Fragment {
     ArrayAdapter<String> adapter;
     DatabaseReference db;
     FirebaseHelper helper;
-
+    List<String> listttt= new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        return inflater.inflate(R.layout.activity_lists, container , false);
-    }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
-        db = FirebaseDatabase.getInstance().getReference();
+        View view = inflater.inflate(R.layout.activity_lists, container , false);
+        db = FirebaseDatabase.getInstance().getReference("AppList");
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listttt.clear();
+                for (DataSnapshot ds : snapshot.getChildren())
+                {
+                    String name=ds.getValue(AppList.class).getName();
+                    listttt.add(name);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        });
         helper = new FirebaseHelper(db);
-        listView = getView().findViewById(R.id.main_listView);
-        addNewListButton = getView().findViewById(R.id.add_new_list_floatingButton);
-        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,helper.retrieve());
+        listView = view.findViewById(R.id.main_listView);
+        addNewListButton = view.findViewById(R.id.add_new_list_floatingButton);
+        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,listttt);
         listView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getActivity(), helper.retrieve().get(i), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), listttt.get(i), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -59,7 +81,17 @@ public class ListsActivity extends Fragment {
                 displayInputDialog();
             }
         });
+        return view;
+        //return inflater.inflate(R.layout.activity_lists, container , false);
     }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+        listView.setAdapter(adapter);
+
+    }
+
+
 
 
     private void displayInputDialog()
@@ -88,8 +120,8 @@ public class ListsActivity extends Fragment {
                     if(helper.save(s))
                     {
                         nameEditTxt.setText("");
-                        adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,helper.retrieve());
-                        listView.setAdapter(adapter);
+//                        adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,helper.retrieve());
+//                        listView.setAdapter(adapter);
 
                     }
                 }else
