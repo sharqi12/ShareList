@@ -39,7 +39,10 @@ public class ListsActivity extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        boolean dialog = getArguments().getBoolean("dialog");
+        if(dialog){
+            displayInputDialog();
+        }
 
         View view = inflater.inflate(R.layout.activity_lists, container , false);
         db = FirebaseDatabase.getInstance().getReference("AppList");

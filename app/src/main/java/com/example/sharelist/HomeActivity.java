@@ -78,23 +78,31 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Bundle bundle = new Bundle();
+        ListsActivity listsActivity = new ListsActivity();
+
         switch (item.getItemId()){
             case R.id.nav_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ProfileActivity()).commit();
                 break;
             case R.id.nav_allLists:
+                bundle.putBoolean("dialog",false);
+                listsActivity.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ListsActivity()).commit();
+                        listsActivity).commit();
                 break;
             case R.id.nav_addNewList:
+                bundle.putBoolean("dialog",true);
+                listsActivity.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ListsActivity()).commit();
+                        listsActivity).commit();
                 break;
             case R.id.nav_logout:
                 FirebaseAuth.getInstance().signOut();
                 Intent intToMain = new Intent(HomeActivity.this, MainActivity.class);
                 startActivity(intToMain);
+                finishAffinity();
                 break;
         }
 
