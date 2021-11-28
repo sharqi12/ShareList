@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,8 +34,8 @@ public class ListsActivity extends Fragment {
     ArrayAdapter<String> adapter;
     DatabaseReference db;
     FirebaseHelper helper;
-    List<String> listttt= new ArrayList<>();
-
+    List<AppList> listttt= new ArrayList<>();
+    List<String> listsNames = new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,8 +53,15 @@ public class ListsActivity extends Fragment {
                 listttt.clear();
                 for (DataSnapshot ds : snapshot.getChildren())
                 {
-                    String name=ds.getValue(AppList.class).getName();
-                    listttt.add(name);
+                    if(ds.getValue(AppList.class).getUsers().contains((String)FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                        String name=ds.getValue(AppList.class).getName();
+                        String listId = ds.getKey();
+                        listttt.add(new AppList(name, listId));
+                    }
+                }
+
+                for (AppList lists : listttt){
+                    listsNames.add(lists.getName());
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -64,16 +72,29 @@ public class ListsActivity extends Fragment {
             }
 
         });
+
         helper = new FirebaseHelper(db);
         listView = view.findViewById(R.id.main_listView);
         addNewListButton = view.findViewById(R.id.add_new_list_floatingButton);
-        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,listttt);
+
+        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,listsNames);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getActivity(), listttt.get(i), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), listttt.get(i), Toast.LENGTH_SHORT).show();
+                Bundle bundle = new Bundle();
+                ListActivity listActivity = new ListActivity();
+
+
+
+
+                bundle.putString("listId",listttt.get(i).getListId());
+                listActivity.setArguments(bundle);
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        listActivity).commit();
+
             }
         });
 
@@ -115,6 +136,8 @@ public class ListsActivity extends Fragment {
                 //SET DATA
                 AppList s=new AppList();
                 s.setName(name);
+                s.setUsers(addFirstUserIDToList(FirebaseAuth.getInstance().getCurrentUser().getUid()));
+                //s.addNewUserToList(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                 //VALIDATE
                 if(name.length()>0 && name != null)
@@ -136,6 +159,12 @@ public class ListsActivity extends Fragment {
         });
 
         d.show();
+    }
+
+    public List<String> addFirstUserIDToList(String userId){
+        List<String> templist = new ArrayList<String>();
+        templist.add(userId);
+        return templist;
     }
 
 }

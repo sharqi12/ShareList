@@ -3,9 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Stary komputer/Projekty/ShareList/app/src/main/res/layout/activity_home.xml" value="0.246875" />
+        <entry key="..\:/Stary komputer/Projekty/ShareList/app/src/main/res/layout/activity_list.xml" value="0.2598958333333333" />
         <entry key="..\:/Stary komputer/Projekty/ShareList/app/src/main/res/layout/activity_lists.xml" value="0.25407608695652173" />
         <entry key="..\:/Stary komputer/Projekty/ShareList/app/src/main/res/layout/activity_profile.xml" value="0.25407608695652173" />
         <entry key="..\:/Stary komputer/Projekty/ShareList/app/src/main/res/layout/input_dialog.xml" value="0.36666666666666664" />
+        <entry key="..\:/Stary komputer/Projekty/ShareList/app/src/main/res/layout/input_dialog_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/Stary komputer/Projekty/ShareList/app/src/main/res/layout/nav_header.xml" value="0.36666666666666664" />
+        <entry key="..\:/Stary komputer/Projekty/ShareList/app/src/main/res/menu/drawer_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/sharq/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_1.xml" value="0.36666666666666664" />
         <entry key="app/src/main/res/drawable/ic_add_new_item.xml" value="0.24375" />
         <entry key="app/src/main/res/drawable/ic_all_lists.xml" value="0.24375" />
         <entry key="app/src/main/res/drawable/ic_new_list.xml" value="0.24375" />
