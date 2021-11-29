@@ -41,9 +41,9 @@ public class AppList {
         this.usersID = users;
     }
 
-//    public void addNewUserToList(String userId){
-//        this.usersID.add(userId);
-//    }
+    public void addNewUserToList(String userId){
+        this.usersID.add(userId);
+    }
 
 
     public HashMap<String, ItemOfList> getItems() {

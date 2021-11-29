@@ -44,7 +44,7 @@ public class ListsActivity extends Fragment {
         if(dialog){
             displayInputDialog();
         }
-        String userId = (String)FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String userId = (String)FirebaseAuth.getInstance().getCurrentUser().getEmail();
         View view = inflater.inflate(R.layout.activity_lists, container , false);
         db = FirebaseDatabase.getInstance().getReference("AppList");
         db.addValueEventListener(new ValueEventListener() {
@@ -75,7 +75,6 @@ public class ListsActivity extends Fragment {
             }
 
         });
-
         helper = new FirebaseHelper(db);
         listView = view.findViewById(R.id.main_listView);
         addNewListButton = view.findViewById(R.id.add_new_list_floatingButton);
@@ -140,7 +139,7 @@ public class ListsActivity extends Fragment {
                 //SET DATA
                 AppList s=new AppList();
                 s.setName(name);
-                s.setUsers(addFirstUserIDToList(FirebaseAuth.getInstance().getCurrentUser().getUid()));
+                s.setUsers(addFirstUserIDToList(FirebaseAuth.getInstance().getCurrentUser().getEmail()));
                 //s.addNewUserToList(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                 //VALIDATE

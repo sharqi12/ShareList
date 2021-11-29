@@ -29,12 +29,13 @@ import java.util.List;
 public class ListActivity extends Fragment {
     ListView listView;
     FloatingActionButton addNewItemButton;
+    FloatingActionButton shareListButton;
     ArrayAdapter<String> adapter;
     DatabaseReference db;
     FirebaseItemHelper helper;
     List<ItemOfList> itemListt= new ArrayList<>();
     List<String> itemNamesList = new ArrayList<>();
-
+    List<String> usersOfList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -44,7 +45,6 @@ public class ListActivity extends Fragment {
         View view = inflater.inflate(R.layout.activity_list, container , false);
         String listId = getArguments().getString("listId");
         db = FirebaseDatabase.getInstance().getReference().child("AppList").child(listId).child("items");
-
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -59,17 +59,25 @@ public class ListActivity extends Fragment {
                 for (ItemOfList list : itemListt){
                     itemNamesList.add(list.getName());
                 }
-
                 adapter.notifyDataSetChanged();
             }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
 
+        DatabaseReference dbb = FirebaseDatabase.getInstance().getReference().child("AppList").child(listId);
+        dbb.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                usersOfList = snapshot.getValue(AppList.class).getUsers();
+            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-
         });
 
         helper = new FirebaseItemHelper(db);
@@ -86,6 +94,14 @@ public class ListActivity extends Fragment {
             @Override
             public void onClick(View view) {
                 displayInputDialog();
+            }
+        });
+
+        shareListButton = view.findViewById(R.id.add_new_user_to_list_floatingButton);
+        shareListButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                displayInputDialogShareList(listId);
             }
         });
 
@@ -139,6 +155,42 @@ public class ListActivity extends Fragment {
     }
 
 
+    private void displayInputDialogShareList(String listId)
+    {
+        Dialog d=new Dialog(getActivity());
+        d.setTitle("Save To Firebase");
+        d.setContentView(R.layout.input_dialog_user);
+
+        final EditText nameEditTxt= (EditText) d.findViewById(R.id.userNameEditText);
+        Button saveBtn= (Button) d.findViewById(R.id.shareListWithUserButton);
+
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //GET DATA
+                String userEmail=nameEditTxt.getText().toString();
+
+                //SET DATA
+
+
+
+                //VALIDATE
+                if(userEmail.length()>0 && userEmail != null)
+                {
+                    usersOfList.add(userEmail);
+                    db.getParent().child("users").setValue(usersOfList);
+                }else
+                {
+                    Toast.makeText(getActivity(), "Email cannot be empty", Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
+        });
+
+        d.show();
+    }
 
 
 }
