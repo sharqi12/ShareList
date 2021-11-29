@@ -32,7 +32,8 @@ public class ListActivity extends Fragment {
     ArrayAdapter<String> adapter;
     DatabaseReference db;
     FirebaseItemHelper helper;
-    List<String> itemListt= new ArrayList<>();
+    List<ItemOfList> itemListt= new ArrayList<>();
+    List<String> itemNamesList = new ArrayList<>();
 
 
     @Nullable
@@ -48,13 +49,21 @@ public class ListActivity extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 itemListt.clear();
+                itemNamesList.clear();
                 for (DataSnapshot ds : snapshot.getChildren())
                 {
                     String name=ds.getValue(ItemOfList.class).getName();
-                    itemListt.add(name);
+                    itemListt.add(new ItemOfList(name));
                 }
+
+                for (ItemOfList list : itemListt){
+                    itemNamesList.add(list.getName());
+                }
+
                 adapter.notifyDataSetChanged();
             }
+
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -67,7 +76,7 @@ public class ListActivity extends Fragment {
 
         listView = view.findViewById(R.id.selected_listView);
         addNewItemButton = view.findViewById(R.id.add_new_item_floatingButton);
-        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,itemListt);
+        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,itemNamesList);
         listView.setAdapter(adapter);
 
 

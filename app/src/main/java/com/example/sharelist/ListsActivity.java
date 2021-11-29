@@ -44,16 +44,19 @@ public class ListsActivity extends Fragment {
         if(dialog){
             displayInputDialog();
         }
-
+        String userId = (String)FirebaseAuth.getInstance().getCurrentUser().getUid();
         View view = inflater.inflate(R.layout.activity_lists, container , false);
         db = FirebaseDatabase.getInstance().getReference("AppList");
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listttt.clear();
+                listsNames.clear();
                 for (DataSnapshot ds : snapshot.getChildren())
                 {
-                    if(ds.getValue(AppList.class).getUsers().contains((String)FirebaseAuth.getInstance().getCurrentUser().getUid())){
+
+                    //po0AppList appList = ds.getValue(AppList.class);
+                    if(ds.getValue(AppList.class).getUsers().contains(userId)){
                         String name=ds.getValue(AppList.class).getName();
                         String listId = ds.getKey();
                         listttt.add(new AppList(name, listId));
@@ -111,6 +114,7 @@ public class ListsActivity extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+
 
     }
 
