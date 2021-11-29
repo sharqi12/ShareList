@@ -72,6 +72,7 @@ public class ListActivity extends Fragment {
                     itemNamesList.add(list.getName());
                 }
                 for (ItemOfList list : boughtitemListt){
+                    if(!itemBoughtNamesList.contains(list.name))
                     itemBoughtNamesList.add(list.getName());
                 }
 
@@ -148,7 +149,6 @@ public class ListActivity extends Fragment {
                     }
                 }
                 db.child(itemId).child("bought").setValue(true);
-                //adapter2.notifyDataSetChanged();
             }
         });
 
