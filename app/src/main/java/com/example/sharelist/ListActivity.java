@@ -1,6 +1,7 @@
 package com.example.sharelist;
 
 import android.app.Dialog;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,7 +106,17 @@ public class ListActivity extends Fragment {
         listView.setAdapter(adapter);
 
         listView2 = view.findViewById(R.id.selected_listView_bought_items);
-        adapter2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,itemBoughtNamesList);
+        adapter2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,itemBoughtNamesList){
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getView(position,convertView, parent);
+
+                TextView tv = view.findViewById(android.R.id.text1);
+                tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                return view;
+            }
+        };
         listView2.setAdapter(adapter2);
 
 

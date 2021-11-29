@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
-            android:layout_weight="1.9">
+            android:layout_weight="1.7">
             <ListView
                 android:id="@+id/selected_listView"
                 android:layout_width="match_parent"
