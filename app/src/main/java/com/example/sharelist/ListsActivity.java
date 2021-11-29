@@ -150,6 +150,7 @@ public class ListsActivity extends Fragment {
                         nameEditTxt.setText("");
 //                        adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,helper.retrieve());
 //                        listView.setAdapter(adapter);
+                        d.dismiss();
 
                     }
                 }else

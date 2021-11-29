@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -161,6 +162,10 @@ public class ListActivity extends Fragment {
         d.setTitle("Save To Firebase");
         d.setContentView(R.layout.input_dialog_user);
 
+        Dialog successDialog = new Dialog(getActivity());
+        successDialog.setContentView(R.layout.dialog_success);
+        TextView successMessage = successDialog.findViewById(R.id.successMessageTextView);
+
         final EditText nameEditTxt= (EditText) d.findViewById(R.id.userNameEditText);
         Button saveBtn= (Button) d.findViewById(R.id.shareListWithUserButton);
 
@@ -180,6 +185,9 @@ public class ListActivity extends Fragment {
                 {
                     usersOfList.add(userEmail);
                     db.getParent().child("users").setValue(usersOfList);
+                    d.dismiss();
+                    successMessage.setText(userEmail + " sucessfully added to list! ");
+                    successDialog.show();
                 }else
                 {
                     Toast.makeText(getActivity(), "Email cannot be empty", Toast.LENGTH_SHORT).show();
