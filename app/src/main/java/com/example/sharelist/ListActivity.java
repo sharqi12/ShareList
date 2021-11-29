@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,13 +30,17 @@ import java.util.List;
 
 public class ListActivity extends Fragment {
     ListView listView;
+    ListView listView2;
     FloatingActionButton addNewItemButton;
     FloatingActionButton shareListButton;
     ArrayAdapter<String> adapter;
+    ArrayAdapter<String> adapter2;
     DatabaseReference db;
     FirebaseItemHelper helper;
+    List<ItemOfList> boughtitemListt= new ArrayList<>();
     List<ItemOfList> itemListt= new ArrayList<>();
     List<String> itemNamesList = new ArrayList<>();
+    List<String> itemBoughtNamesList = new ArrayList<>();
     List<String> usersOfList = new ArrayList<>();
 
     @Nullable
@@ -51,16 +56,26 @@ public class ListActivity extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 itemListt.clear();
                 itemNamesList.clear();
+                boughtitemListt.clear();
                 for (DataSnapshot ds : snapshot.getChildren())
                 {
                     String name=ds.getValue(ItemOfList.class).getName();
-                    itemListt.add(new ItemOfList(name));
+                    if(!ds.getValue(ItemOfList.class).bought){
+                        itemListt.add(new ItemOfList(name, ds.getKey()));
+                    }else {
+                        boughtitemListt.add(new ItemOfList(name));
+                    }
                 }
 
                 for (ItemOfList list : itemListt){
                     itemNamesList.add(list.getName());
                 }
+                for (ItemOfList list : boughtitemListt){
+                    itemBoughtNamesList.add(list.getName());
+                }
+
                 adapter.notifyDataSetChanged();
+                adapter2.notifyDataSetChanged();
             }
 
             @Override
@@ -85,13 +100,17 @@ public class ListActivity extends Fragment {
 
         listView = view.findViewById(R.id.selected_listView);
         addNewItemButton = view.findViewById(R.id.add_new_item_floatingButton);
+
         adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,itemNamesList);
         listView.setAdapter(adapter);
+
+        listView2 = view.findViewById(R.id.selected_listView_bought_items);
+        adapter2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,itemBoughtNamesList);
+        listView2.setAdapter(adapter2);
 
 
         addNewItemButton = view.findViewById(R.id.add_new_item_floatingButton);
         addNewItemButton.setOnClickListener(new View.OnClickListener(){
-
             @Override
             public void onClick(View view) {
                 displayInputDialog();
@@ -103,6 +122,22 @@ public class ListActivity extends Fragment {
             @Override
             public void onClick(View view) {
                 displayInputDialogShareList(listId);
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //Toast.makeText(getActivity(), listttt.get(i), Toast.LENGTH_SHORT).show();
+                String name = itemNamesList.get(i);
+                String itemId = null;
+                for(ItemOfList item : itemListt){
+                    if(item.name.equals(name)){
+                        itemId = item.itemId;
+                    }
+                }
+                db.child(itemId).child("bought").setValue(true);
+                //adapter2.notifyDataSetChanged();
             }
         });
 

@@ -1,41 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@android:color/darker_gray">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <ListView
-        android:id="@+id/selected_listView"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        />
+        android:orientation="vertical"
+        android:weightSum="3"
+        android:background="@android:color/darker_gray">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_new_item_floatingButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp"
-        android:src="@drawable/ic_add_new_item"
-        app:backgroundTint="@color/grey" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:layout_weight="1.9">
+            <ListView
+                android:id="@+id/selected_listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </ScrollView>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:layout_weight="1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical" >
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_new_user_to_list_floatingButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="30dp"
-        android:src="@drawable/ic_user_add"
-        app:backgroundTint="@color/grey" />
+                <ListView
+                    android:id="@+id/selected_listView_bought_items"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+        </ScrollView>
 
+
+    </LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_new_item_floatingButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/ic_add_new_item"
+            app:backgroundTint="@color/grey" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_new_user_to_list_floatingButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="100dp"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/ic_user_add"
+            app:backgroundTint="@color/grey" />
 
 </RelativeLayout>
