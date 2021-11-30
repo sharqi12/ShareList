@@ -1,6 +1,8 @@
 package com.example.sharelist;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -29,7 +35,7 @@ import java.util.List;
 
 public class ListsActivity extends Fragment {
 
-    ListView listView;
+    SwipeMenuListView listView;
     FloatingActionButton addNewListButton;
     ArrayAdapter<String> adapter;
     DatabaseReference db;
@@ -81,6 +87,41 @@ public class ListsActivity extends Fragment {
 
         adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,listsNames);
         listView.setAdapter(adapter);
+
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+            @Override
+            public void create(SwipeMenu menu) {
+                // create "delete" item
+                SwipeMenuItem deleteItem = new SwipeMenuItem(
+                        getContext());
+                // set item background
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                        0x3F, 0x25)));
+                // set item width
+                deleteItem.setWidth(250);
+                // set a icon
+                deleteItem.setIcon(getContext().getDrawable(R.drawable.ic_delete));
+                // add to menu
+                menu.addMenuItem(deleteItem);
+            }
+        };
+        listView.setMenuCreator(creator);
+        listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    case 0:
+                        db.child(listttt.get(position).listId).removeValue();
+                        listsNames.remove(position);
+                        return true;
+
+                }
+                // false : close the menu; true : not close the menu
+                return false;
+            }
+        });
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override

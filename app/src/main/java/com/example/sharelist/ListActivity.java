@@ -1,11 +1,15 @@
 package com.example.sharelist;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.BounceInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,6 +22,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -30,8 +38,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListActivity extends Fragment {
-    ListView listView;
-    ListView listView2;
+    private static final String TAG = "listActivity";
+    SwipeMenuListView listView;
+    SwipeMenuListView listView2;
     FloatingActionButton addNewItemButton;
     FloatingActionButton shareListButton;
     ArrayAdapter<String> adapter;
@@ -90,6 +99,7 @@ public class ListActivity extends Fragment {
         dbb.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.getValue() != null)
                 usersOfList = snapshot.getValue(AppList.class).getUsers();
             }
 
@@ -107,6 +117,44 @@ public class ListActivity extends Fragment {
         adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,itemNamesList);
         listView.setAdapter(adapter);
 
+        //HERE SWIPE1
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+            @Override
+            public void create(SwipeMenu menu) {
+                // create "delete" item
+                SwipeMenuItem deleteItem = new SwipeMenuItem(
+                        getContext());
+                // set item background
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                        0x3F, 0x25)));
+                // set item width
+                deleteItem.setWidth(250);
+                // set a icon
+                deleteItem.setIcon(getContext().getDrawable(R.drawable.ic_delete));
+                // add to menu
+                menu.addMenuItem(deleteItem);
+            }
+        };
+        listView.setMenuCreator(creator);
+
+
+        listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    case 0:
+                        db.child(itemListt.get(position).itemId).removeValue();
+                        itemNamesList.remove(position);
+                        return true;
+
+                }
+                // false : close the menu; true : not close the menu
+                return false;
+            }
+        });
+
+
+
         listView2 = view.findViewById(R.id.selected_listView_bought_items);
         adapter2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,itemBoughtNamesList){
             @NonNull
@@ -120,6 +168,22 @@ public class ListActivity extends Fragment {
             }
         };
         listView2.setAdapter(adapter2);
+
+        //HERE SWIPE2
+        listView2.setMenuCreator(creator);
+        listView2.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    case 0:
+                        db.child(boughtitemListt.get(position).itemId).removeValue();
+                        itemBoughtNamesList.remove(position);
+                        return true;
+                }
+                // false : close the menu; true : not close the menu
+                return false;
+            }
+        });
 
 
         addNewItemButton = view.findViewById(R.id.add_new_item_floatingButton);

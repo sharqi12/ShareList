@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:fillViewport="true"
             android:layout_weight="1.7">
-            <ListView
+            <com.baoyz.swipemenulistview.SwipeMenuListView
                 android:id="@+id/selected_listView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -33,7 +33,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="vertical" >
 
-                <ListView
+                <com.baoyz.swipemenulistview.SwipeMenuListView
                     android:id="@+id/selected_listView_bought_items"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
