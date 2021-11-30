@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,6 +53,7 @@ public class ListActivity extends Fragment {
     List<String> itemNamesList = new ArrayList<>();
     List<String> itemBoughtNamesList = new ArrayList<>();
     List<String> usersOfList = new ArrayList<>();
+    TextView listNameTextView;
 
     @Nullable
     @Override
@@ -94,13 +96,14 @@ public class ListActivity extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-
+        listNameTextView = view.findViewById(R.id.listName);
         DatabaseReference dbb = FirebaseDatabase.getInstance().getReference().child("AppList").child(listId);
         dbb.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.getValue() != null)
                 usersOfList = snapshot.getValue(AppList.class).getUsers();
+                listNameTextView.setText(snapshot.getValue(AppList.class).getName());
             }
 
             @Override
@@ -108,6 +111,9 @@ public class ListActivity extends Fragment {
 
             }
         });
+
+
+
 
         helper = new FirebaseItemHelper(db);
 

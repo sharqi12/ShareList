@@ -10,6 +10,20 @@
         android:orientation="vertical"
         android:weightSum="3"
         android:background="@android:color/darker_gray">
+        <TextView
+            android:id="@+id/listName"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="List name"
+            android:textSize="32sp"
+            android:textColor="@color/black"
+            android:textAppearance="@android:style/TextAppearance.WindowTitle"
+            android:visibility="visible"
+            />
 
         <ScrollView
             android:layout_width="match_parent"
