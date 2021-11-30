@@ -64,11 +64,12 @@ public class ListActivity extends Fragment {
                     if(!ds.getValue(ItemOfList.class).bought){
                         itemListt.add(new ItemOfList(name, ds.getKey()));
                     }else {
-                        boughtitemListt.add(new ItemOfList(name));
+                        boughtitemListt.add(new ItemOfList(name, ds.getKey()));
                     }
                 }
 
                 for (ItemOfList list : itemListt){
+                    if(!itemNamesList.contains(list.name))
                     itemNamesList.add(list.getName());
                 }
                 for (ItemOfList list : boughtitemListt){
@@ -149,6 +150,23 @@ public class ListActivity extends Fragment {
                     }
                 }
                 db.child(itemId).child("bought").setValue(true);
+            }
+        });
+
+        listView2.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //Toast.makeText(getActivity(), listttt.get(i), Toast.LENGTH_SHORT).show();
+                String name = itemBoughtNamesList.get(i);
+                String itemId = null;
+                for(ItemOfList item : boughtitemListt){
+                    if(item.name.equals(name)){
+                        itemId = item.itemId;
+                    }
+                }
+                db.child(itemId).child("bought").setValue(false);
+                itemBoughtNamesList.remove(i);
+
             }
         });
 
