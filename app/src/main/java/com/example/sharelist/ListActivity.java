@@ -279,7 +279,7 @@ public class ListActivity extends Fragment {
                 s.setName(name);
 
                 //VALIDATE
-                if(name.length()>0 && name != null)
+                if(name.length()>0 && name != null && !doesItemNameExistsInList(name))
                 {
                     if(helper.save(s))
                     {
@@ -288,9 +288,11 @@ public class ListActivity extends Fragment {
 //                        listView.setAdapter(adapter);
 
                     }
-                }else
+                }else if(name.length()<=0)
                 {
                     Toast.makeText(getActivity(), "Name of item cannot be empty", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getActivity(), "item already exist on list", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -298,6 +300,10 @@ public class ListActivity extends Fragment {
         });
 
         d.show();
+    }
+
+    private boolean doesItemNameExistsInList(String name){
+        if(itemNamesList.contains(name) || itemBoughtNamesList.contains(name)) return true; else return false;
     }
 
 
