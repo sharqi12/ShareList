@@ -74,19 +74,15 @@ public class ListActivity extends Fragment {
                     String name=ds.getValue(ItemOfList.class).getName();
                     if(!ds.getValue(ItemOfList.class).bought){
                         itemListt.add(new ItemOfList(name, ds.getKey()));
+                        if(!itemNamesList.contains(ds.getValue(ItemOfList.class).name))
+                        itemNamesList.add(ds.getValue(ItemOfList.class).getName());
                     }else {
                         boughtitemListt.add(new ItemOfList(name, ds.getKey()));
+                        if(!itemBoughtNamesList.contains(ds.getValue(ItemOfList.class).name))
+                            itemBoughtNamesList.add(ds.getValue(ItemOfList.class).getName());
                     }
                 }
 
-                for (ItemOfList list : itemListt){
-                    if(!itemNamesList.contains(list.name))
-                    itemNamesList.add(list.getName());
-                }
-                for (ItemOfList list : boughtitemListt){
-                    if(!itemBoughtNamesList.contains(list.name))
-                    itemBoughtNamesList.add(list.getName());
-                }
 
                 adapter.notifyDataSetChanged();
                 adapter2.notifyDataSetChanged();
@@ -101,9 +97,10 @@ public class ListActivity extends Fragment {
         dbb.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.getValue() != null)
-                usersOfList = snapshot.getValue(AppList.class).getUsers();
-                listNameTextView.setText(snapshot.getValue(AppList.class).getName());
+                if(snapshot.getValue() != null) {
+                    usersOfList = snapshot.getValue(AppList.class).getUsers();
+                    listNameTextView.setText(snapshot.getValue(AppList.class).getName());
+                }
             }
 
             @Override
@@ -220,6 +217,13 @@ public class ListActivity extends Fragment {
                     }
                 }
                 db.child(itemId).child("bought").setValue(true);
+                itemNamesList.clear();
+                itemBoughtNamesList.clear();
+                for(ItemOfList item : itemListt){
+                    if(item.bought) {
+                        itemBoughtNamesList.add(item.name);
+                    }else itemNamesList.add(item.name);
+                }
             }
         });
 
@@ -236,6 +240,13 @@ public class ListActivity extends Fragment {
                 }
                 db.child(itemId).child("bought").setValue(false);
                 itemBoughtNamesList.remove(i);
+                itemNamesList.clear();
+                itemBoughtNamesList.clear();
+                for(ItemOfList item : itemListt){
+                    if(item.bought) {
+                        itemBoughtNamesList.add(item.name);
+                    }else itemNamesList.add(item.name);
+                }
 
             }
         });
